@@ -1,0 +1,6 @@
+/packages
+/.vs
+/src/Sistema.Utils/bin
+/src/Sistema.Utils/obj
+/test/Sistema.Utils.Test/bin
+/test/Sistema.Utils.Test/obj
