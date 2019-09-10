@@ -14,18 +14,10 @@ namespace Sistema.Utils.Test.WebService
         IWebService webServiceBase { get; }
         NameValueCollection requestHeader = new NameValueCollection();
 
-        const string username = "Sistema";
-        const string password = "LUSIVRp@2018*";
-        readonly string encoded = Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(username + ":" + password));
+        const string token = "8b9e51833fb7baeaa17826e793617c30";
+        readonly string encoded = Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(token + ":"));
 
-        readonly string soapTemplate = "<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" xmlns:tem=\"http://tempuri.org/\">"
-                            + "<soap:Header/>"
-                            + "<soap:Body>"
-                            + "<tem:LocalizaPessoas>"
-                            + " <tem:documento>32518799877</tem:documento>"
-                            + "</tem:LocalizaPessoas>"
-                            + "</soap:Body>"
-                            + "</soap:Envelope>";
+        readonly string requestData = "{\"email\":\"marbue @ig.com.br\",\"cc_emails\":\"\",\"due_date\":\"2019-09-20\",\"ensure_workday_due_date\":true,\"items\":[{\"description\":\"PRODUTO 0001\",\"quantity\":1,\"price_cents\":1.0}],\"custom_variables\":[],\"order_id\":\"0001\"}";
 
         #endregion Variables
 
@@ -37,11 +29,10 @@ namespace Sistema.Utils.Test.WebService
 
             webServiceBase = new WebServiceBase(new WebServiceModel()
             {
-                Url = "http://wscx.unitfour.com.br/intouchws.asmx?wsdl",
+                Url = "https://api.iugu.com/v1/invoices",
                 RequestHeader = requestHeader,
-                RequestData = soapTemplate,
-                Proxy = new WebProxy("webproxy.Sistema.intranet", 80),
-                ContentType = "text/xml; encoding='utf-8'",
+                RequestData = requestData,
+                ContentType = "application/json; encoding='utf-8'",
                 MethodType = Enums.WebServiceEnum.Verbs.POST
             });
         }
@@ -49,9 +40,20 @@ namespace Sistema.Utils.Test.WebService
         [Fact]
         public void Deve_Retornar_Um_HttpWebResponse()
         {
-            HttpWebResponse response = webServiceBase.Call();
-            var result = new StreamReader(response.GetResponseStream()).ReadToEnd();
-            Assert.IsType<HttpWebResponse>(response);
+            try
+            {
+                HttpWebResponse response = webServiceBase.Call();
+                var result = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                Assert.IsType<HttpWebResponse>(response);
+            }
+            catch (WebException ex)
+            {
+                Console.Write(ex);
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex);
+            }
         }
 
         #endregion Methods

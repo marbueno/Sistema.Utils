@@ -74,7 +74,8 @@ namespace Sistema.Utils.WebServices
             }
             catch (Exception ex)
             {
-                throw new ArgumentException($"Erro ao conectar no WebService: [{ex.Message}]");
+                //throw new ArgumentException($"Erro ao conectar no WebService: [{ex.Message}]");
+                throw ex;
             }
         }
 
