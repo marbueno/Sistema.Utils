@@ -279,6 +279,8 @@ namespace Sistema.Utils
 
             if (!prefix)
                 valorFinal = valorFinal.Replace("R$", "").Trim();
+            else
+                valorFinal = valorFinal.Replace("R$", "R$ ").Trim();
 
             return valorFinal;
         }
